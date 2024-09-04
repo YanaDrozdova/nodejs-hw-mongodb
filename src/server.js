@@ -19,7 +19,6 @@ export const setupServer = () => {
 
   //routes
   app.get('/contacts', async (req, res) => {
-    // const data = await ContactCollection.find();
     const data = await contactServices.getAllContacts();
 
     res.json({
