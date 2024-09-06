@@ -1,6 +1,7 @@
 import { Router } from 'express';
 import {
   createContactController,
+  deleteContactController,
   getAllContactsController,
   getContactByIdController,
   patchContactController,
@@ -16,5 +17,7 @@ router.get('/:id', ctrlWrapper(getContactByIdController));
 router.post('/', ctrlWrapper(createContactController));
 
 router.patch('/:id', ctrlWrapper(patchContactController));
+
+router.delete('/:id', ctrlWrapper(deleteContactController));
 
 export default router;
