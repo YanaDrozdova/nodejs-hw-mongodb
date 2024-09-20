@@ -1,4 +1,6 @@
 import { Schema, model } from 'mongoose';
+import { handleSaveError, setUpdateOptions } from './hooks.js';
+
 import { emailRegexp } from '../../constants/users.js';
 
 const userSchema = new Schema(
@@ -20,6 +22,10 @@ const userSchema = new Schema(
   },
   { versionKey: false, timestamps: true },
 );
+
+userSchema.post('save', handleSaveError);
+userSchema.pre('findOneAndUpdate', setUpdateOptions);
+userSchema.post('findOneAndUpdate', handleSaveError);
 
 const UserCollection = model('user', userSchema);
 

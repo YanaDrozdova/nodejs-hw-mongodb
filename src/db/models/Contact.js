@@ -30,9 +30,7 @@ const contactSchema = new Schema(
 );
 
 contactSchema.post('save', handleSaveError);
-
 contactSchema.pre('findOneAndUpdate', setUpdateOptions);
-
 contactSchema.post('findOneAndUpdate', handleSaveError);
 
 const ContactCollection = model('contact', contactSchema);
