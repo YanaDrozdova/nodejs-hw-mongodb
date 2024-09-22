@@ -50,19 +50,15 @@ export const login = async (payload) => {
   if (!user) {
     throw createHttpError(401, 'Email or password invalid');
   }
-
   //робимо перевірку на правильність паролю
   const passwordCompare = await bcrypt.compare(password, user.password);
   if (!passwordCompare) {
     throw createHttpError(401, 'Email or password invalid');
   }
-
   //видаляємо попередню сесію
   await SessionCollection.deleteOne({ userId: user._id });
-
   //створюємо нову сесію
   const sessionData = createSession();
-
   //додаємо створену сесію в БД
   const userSession = await SessionCollection.create({
     userId: user._id,
@@ -70,4 +66,37 @@ export const login = async (payload) => {
   });
 
   return userSession;
+};
+
+export const findSessionByAccessToken = (accessToken) =>
+  SessionCollection.findOne({ accessToken });
+
+export const findUser = (filter) => UserCollection.findOne(filter);
+
+export const refreshSession = async ({ refreshToken, sessionId }) => {
+  const oldSession = await SessionCollection.findOne({
+    _id: sessionId,
+    refreshToken,
+  });
+  if (!oldSession) {
+    throw createHttpError(401, 'Session not found');
+  }
+
+  if (new Date() > oldSession.refreshTokenValidUntil) {
+    throw createHttpError(401, 'Session token expired');
+  }
+
+  await SessionCollection.deleteOne({ _id: sessionId });
+
+  const sessionData = createSession();
+  const userSession = await SessionCollection.create({
+    userId: oldSession._id,
+    ...sessionData,
+  });
+
+  return userSession;
+};
+
+export const logout = async (sessionId) => {
+  await SessionCollection.deleteOne({ _id: sessionId });
 };
