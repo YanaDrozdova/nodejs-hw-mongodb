@@ -48,15 +48,15 @@ export const getAllContacts = async ({
   };
 };
 
-export const getContact = (filter) => ContactCollection.findById(filter);
+export const getContact = (filter) => ContactCollection.findOne(filter);
 
 export const createContact = async (payload) => {
   const student = await ContactCollection.create(payload);
   return student;
 };
 
-export const updateContact = async (id, payload, options = {}) => {
-  const rawResult = await ContactCollection.findOneAndUpdate(id, payload, {
+export const updateContact = async (filter, payload, options = {}) => {
+  const rawResult = await ContactCollection.findOneAndUpdate(filter, payload, {
     includeResultMetadata: true,
     ...options,
   });
@@ -69,5 +69,5 @@ export const updateContact = async (id, payload, options = {}) => {
   };
 };
 
-export const deleteContact = (contactId) =>
-  ContactCollection.findByIdAndDelete(contactId);
+export const deleteContact = (filter) =>
+  ContactCollection.findOneAndDelete(filter);
