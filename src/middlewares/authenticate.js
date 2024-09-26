@@ -19,7 +19,7 @@ const authenticate = async (req, res, next) => {
     return next(createHttpError(401, 'Session not found'));
   }
 
-  if (new Date() > session.accessTokenValidUntil) {
+  if (new Date() > new Date(session.accessTokenValidUntil)) {
     return next(createHttpError(401, 'Access token expired'));
   }
 
@@ -29,6 +29,8 @@ const authenticate = async (req, res, next) => {
   }
 
   req.user = user;
+
+  console.log('тіло запиту', req.user);
 
   next();
 };

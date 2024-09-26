@@ -1,14 +1,19 @@
 import { contactTypeList } from '../../constants/contacts.js';
 
 const parseFilterParams = ({ type, isFavourite }) => {
-  const parsedType = contactTypeList.includes(type) ? type : contactTypeList[0];
+  const parsedType = contactTypeList.includes(type) ? type : undefined;
   const parsedIsFavourite =
-    typeof isFavourite === 'boolean' ? isFavourite : isFavourite === 'true';
+    isFavourite === 'true' ? true : isFavourite === 'false' ? false : undefined;
+  const filterParams = {};
 
-  return {
-    type: parsedType,
-    isFavourite: parsedIsFavourite,
-  };
+  if (parsedType !== undefined) {
+    filterParams.type = parsedType;
+  }
+  if (parsedIsFavourite !== undefined) {
+    filterParams.isFavourite = parsedIsFavourite;
+  }
+
+  return filterParams;
 };
 
 export default parseFilterParams;

@@ -1,6 +1,6 @@
 const calculatePaginationData = ({ count, perPage, page }) => {
   const totalPages = Math.ceil(count / perPage);
-  const hasNextPage = Boolean(totalPages - page);
+  const hasNextPage = Boolean(totalPages - page > 0);
   const hasPreviousPage = page !== 1;
 
   return {

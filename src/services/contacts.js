@@ -13,18 +13,24 @@ export const getAllContacts = async ({
   const skip = (page - 1) * perPage;
 
   const contactsQuery = ContactCollection.find();
+  // console.log(contactsQuery);
+
+  // Логування для перевірки параметрів
+  console.log('Filter parameters:', filter);
 
   if (filter.type) {
-    contactsQuery.where('contactType').equals(filter.type);
+    contactsQuery.where('contactType').eq(filter.type);
   }
 
-  if (filter.isFavourite) {
-    contactsQuery.where('isFavourite').equals(filter.isFavourite);
+  if ('isFavourite' in filter) {
+    contactsQuery.where('isFavourite').eq(filter.isFavourite);
   }
 
   if (filter.userId) {
-    contactsQuery.where('userId').equals(filter.userId);
+    contactsQuery.where('userId').eq(filter.userId);
   }
+
+  console.log('Contacts query:', contactsQuery.getQuery()); // Лог запиту
 
   const count = await ContactCollection.find()
     .merge(contactsQuery)
@@ -51,8 +57,8 @@ export const getAllContacts = async ({
 export const getContact = (filter) => ContactCollection.findOne(filter);
 
 export const createContact = async (payload) => {
-  const student = await ContactCollection.create(payload);
-  return student;
+  const contact = await ContactCollection.create(payload);
+  return contact;
 };
 
 export const updateContact = async (filter, payload, options = {}) => {
