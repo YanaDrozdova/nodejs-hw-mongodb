@@ -13,10 +13,6 @@ export const getAllContacts = async ({
   const skip = (page - 1) * perPage;
 
   const contactsQuery = ContactCollection.find();
-  // console.log(contactsQuery);
-
-  // Логування для перевірки параметрів
-  console.log('Filter parameters:', filter);
 
   if (filter.type) {
     contactsQuery.where('contactType').eq(filter.type);
@@ -29,8 +25,6 @@ export const getAllContacts = async ({
   if (filter.userId) {
     contactsQuery.where('userId').eq(filter.userId);
   }
-
-  console.log('Contacts query:', contactsQuery.getQuery()); // Лог запиту
 
   const count = await ContactCollection.find()
     .merge(contactsQuery)
