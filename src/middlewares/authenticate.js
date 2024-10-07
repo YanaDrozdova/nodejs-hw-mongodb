@@ -30,8 +30,6 @@ const authenticate = async (req, res, next) => {
 
   req.user = user;
 
-  console.log('тіло запиту', req.user);
-
   next();
 };
 
