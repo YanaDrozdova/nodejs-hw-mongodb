@@ -1,0 +1,14 @@
+tags:
+  - Auth
+summary: Logout user
+operationId: logoutUser
+description: 'Logout user with deleting session & refresh token'
+security:
+  - bearerAuth: []
+responses:
+  '204':
+    description: 'User logged out successfully'
+  '401':
+    $ref: ..\..\..\components\responses\401\unauthorized.yaml
+  '500':
+    $ref: ..\..\..\components\responses\500.yaml
